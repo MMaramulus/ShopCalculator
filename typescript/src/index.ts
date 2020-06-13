@@ -3,9 +3,9 @@ export type ServiceType = "Photography" | "VideoRecording" | "BlurayPackage" | "
 
 export const updateSelectedServices = (
     previouslySelectedServices: ServiceType[],
-    action: { type: "Select" | "Deselect"; service: ServiceType }
+    action: { type: 'Select' | "Deselect"; service: ServiceType }
 ) => {
-    if (action.type == "Select")
+    if (action.type === "Select")
     {
         if (previouslySelectedServices.some(x => x === action.service))
         {
@@ -14,7 +14,7 @@ export const updateSelectedServices = (
         previouslySelectedServices.push(action.service);
         return previouslySelectedServices;
     }
-    if (action.type == "Deselect")
+    if (action.type === "Deselect")
     {
         if (previouslySelectedServices.some(x => x === action.service))
         {
