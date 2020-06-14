@@ -28,6 +28,11 @@ describe("updateSelectedServices.select", function () {
         });
         expect(result).toEqual(["WeddingSession", "Photography", "TwoDayEvent"]);
     });
+    // added tests
+    test("should not allow to select twice", function () {
+        var result = _1.updateSelectedServices(["WeddingSession", "Photography"], { type: "Select", service: "Photography" });
+        expect(result).toEqual(["WeddingSession", "Photography"]);
+    });
 });
 describe("updateSelectedServices.deselect", function () {
     test("should deselect", function () {
