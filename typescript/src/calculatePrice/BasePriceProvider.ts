@@ -1,16 +1,28 @@
 import { ServiceType, ServiceYear } from "..";
 import { ServiceYearOrAny, anyYear } from "../common/commonTypes";
 
-export class ServicePriceProvider {
+export class BasePriceProvider {
 
-    private pricesMap;
-    constructor() {
-        this.loadPrices();
+    private pricesMap : Map<string, number> = null;
+
+    public getPrice(serviceType: ServiceType, serviceYear: ServiceYear) : number
+    {
+        let price = this.getPriceMap().get(this.getKey(serviceType, serviceYear));
+        if (price) {
+            return price;
+        }
+        price = this.pricesMap.get(this.getKey(serviceType, anyYear));
+        if (price) {
+            return price;
+        }
+        return 0;
     }
 
-    private getKey(serviceType: ServiceType, year: ServiceYearOrAny)
-    {
-        return serviceType + "##" + year;
+    private getPriceMap(){
+        if (!this.pricesMap) {
+            this.pricesMap = this.loadPrices();
+        }
+        return this.pricesMap;
     }
 
     private loadPrices()
@@ -28,19 +40,11 @@ export class ServicePriceProvider {
         pricesMap.set(this.getKey("TwoDayEvent", anyYear), 400);
         pricesMap.set(this.getKey("WeddingSession", anyYear), 600);
 
-        this.pricesMap = pricesMap;
+        return pricesMap;
     }
 
-    public getPrice(serviceType: ServiceType, serviceYear: ServiceYear) : number
+    private getKey(serviceType: ServiceType, year: ServiceYearOrAny)
     {
-        let price = this.pricesMap.get(this.getKey(serviceType, serviceYear));
-        if (price) {
-            return price;
-        }
-        price = this.pricesMap.get(this.getKey(serviceType, anyYear));
-        if (price) {
-            return price;
-        }
-        return 0;
+        return serviceType + "##" + year;
     }
 }
